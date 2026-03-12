@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aSAL FM | அசல் இசை | Feel The Music, Feel The Love</title>
+  <meta name="description" content="aSAL FM - Tamil community internet radio. அசல் இசை. Feel The Music, Feel The Love." />
+  <link rel="icon" href="assets/logo.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Tiro+Tamil:ital@0;1&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --gold: #c9973a;
+      --gold-light: #e8c06a;
+      --gold-dim: #8a6520;
+      --black: #080808;
+      --dark: #111111;
+      --dark2: #1a1a1a;
+      --red: #c0392b;
+      --text: #e8dcc8;
+      --text-dim: #9a8a6a;
+      --border: rgba(201,151,58,0.25);
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 4px; }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeInUp   { from { opacity:0; transform:translateY(30px);  } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn     { from { opacity:0; } to { opacity:1; } }
+    @keyframes pulse      { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+    @keyframes shimmer    { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+    @keyframes ticker     { 0% { transform:translateX(100%); } 100% { transform:translateX(-100%); } }
+
+    /* Background slideshow */
+    @keyframes bgFade1 { 0%,30%,100% { opacity:1; } 35%,95% { opacity:0; } }
+    @keyframes bgFade2 { 0%,28%      { opacity:0; } 33%,63% { opacity:1; } 68%,100% { opacity:0; } }
+    @keyframes bgFade3 { 0%,61%      { opacity:0; } 66%,96% { opacity:1; } 100%     { opacity:0; } }
+
+    .bg-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      filter: grayscale(40%) brightness(0.28);
+      z-index: 0;
+    }
+    .bg-slide:nth-child(1) { animation: bgFade1 21s ease-in-out infinite; }
+    .bg-slide:nth-child(2) { animation: bgFade2 21s ease-in-out infinite; }
+    .bg-slide:nth-child(3) { animation: bgFade3 21s ease-in-out infinite; }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(8,8,8,0.5) 0%,
+        rgba(8,8,8,0.3) 40%,
+        rgba(8,8,8,0.7) 100%
+      );
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== LIVE NOW BAR ===== */
+    @keyframes livepulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(0.85);} }
+    .live-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1100;
+      background: rgba(8,8,8,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,151,58,0.2);
+      padding: 7px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .live-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .live-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(192,57,43,0.15);
+      border: 1px solid rgba(192,57,43,0.4);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #e74c3c;
+      letter-spacing: 0.12em;
+    }
+    .live-dot {
+      width: 6px; height: 6px;
+      background: #e74c3c;
+      border-radius: 50%;
+      animation: livepulse 1.5s ease infinite;
+      flex-shrink: 0;
+    }
+    .live-bar-tagline {
+      font-family: 'Tiro Tamil', serif;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      letter-spacing: 0.03em;
+    }
+    .live-bar-tagline span {
+      color: var(--gold-dim);
+      font-size: 0.72rem;
+    }
+    .live-bar-right {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: sticky;
+      top: 36px;
+      z-index: 1000;
+      background: rgba(8,8,8,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      animation: fadeInDown 0.6s ease;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-logo img {
+      height: 52px;
+      width: 52px;
+      object-fit: contain;
+      mix-blend-mode: lighten;
+      filter: drop-shadow(0 0 8px rgba(201,151,58,0.4));
+    }
+    .nav-logo-text {
+      display: none;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .nav-logo-text .name {
+      font-family: 'Raleway', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      transition: color 0.3s;
+      position: relative;
+      padding-bottom: 4px;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* Mobile hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--gold);
+      transition: all 0.3s;
+    }
+
+    /* ===== HERO SECTION ===== */
+    #home {
+      padding: 50px 5% 70px;
+      position: relative;
+      overflow: hidden;
+    }
+    #home::before { display: none; }
+    .hero-header {
+      text-align: center;
+      margin-bottom: 50px;
+      animation: fadeInDown 0.7s ease;
+    }
+    .hero-header h1 {
+      font-family: 'Tiro Tamil', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      color: #fff;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .hero-header h1 .gold { color: var(--gold); }
+    .hero-header .subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      color: var(--text-dim);
+      letter-spacing: 0.18em;
+      margin-bottom: 16px;
+    }
+    .hero-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .hero-left { animation: fadeInUp 0.8s ease; }
+    .hero-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-label::before {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .hero-title {
+      font-family: 'Tiro Tamil', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.15;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .hero-title .gold { color: var(--gold); }
+    .hero-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1rem, 2.5vw, 1.6rem);
+      color: var(--gold-light);
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+    }
+    .hero-desc {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text-dim);
+      max-width: 480px;
+      margin-bottom: 36px;
+      font-family: 'Tiro Tamil', serif;
+    }
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(192,57,43,0.15);
+      border: 1px solid rgba(192,57,43,0.4);
+      color: #e74c3c;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+    }
+    .live-dot {
+      width: 7px; height: 7px;
+      background: #e74c3c;
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .hero-right {
+      animation: fadeIn 1s ease 0.3s both;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .player-card {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,151,58,0.05);
+    }
+    .player-card-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .player-card-label::before {
+      content: '▶';
+      color: var(--gold);
+      font-size: 0.6rem;
+    }
+    .player-card iframe {
+      border-radius: 8px;
+      display: block;
+    }
+    .hero-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+      margin: 10px 0;
+    }
+
+    /* ===== SECTION BASE ===== */
+    section { padding: 80px 5%; }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 24px; height: 1px;
+      background: var(--gold);
+      margin-right: 10px;
+    }
+    .section-label::after {
+      content: '';
+      display: inline-block;
+      width: 24px; height: 1px;
+      background: var(--gold);
+      margin-left: 10px;
+    }
+    .section-title {
+      font-family: 'Tiro Tamil', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      color: #fff;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .section-title .en {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7em;
+      color: var(--gold-dim);
+      display: block;
+      letter-spacing: 0.15em;
+      text-align: center;
+    }
+    .section-divider {
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 16px auto 40px;
+    }
+
+    /* ===== CINEMA TICKET SCHEDULE ===== */
+    .ticket-day-header {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tickets-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ticket {
+      display: flex;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(26,26,26,0.88);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .ticket:hover {
+      transform: translateX(4px);
+      border-color: var(--gold-dim);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .ticket-stub {
+      width: 38px;
+      background: linear-gradient(180deg, var(--gold-dim), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .ticket-stub::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; right: -1px;
+      width: 2px;
+      background-image: repeating-linear-gradient(
+        to bottom, transparent, transparent 5px,
+        rgba(8,8,8,0.8) 5px, rgba(8,8,8,0.8) 9px
+      );
+    }
+    .ticket-stub .stub-text {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: 'Tiro Tamil', serif;
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: 0.12em;
+    }
+    .ticket-body {
+      padding: 12px 16px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .ticket-time-col {
+      text-align: center;
+      flex-shrink: 0;
+      min-width: 68px;
+    }
+    .ticket-uk-time {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: var(--gold);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .ticket-ist-time {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      color: var(--text);
+      font-weight: 600;
+      margin-top: 3px;
+      white-space: nowrap;
+    }
+    .ticket-divider-v {
+      width: 1px;
+      height: 36px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .ticket-info { flex: 1; }
+    .ticket-show {
+      font-family: 'Tiro Tamil', serif;
+      font-size: 0.95rem;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 2px;
+    }
+    .ticket-rj {
+      font-size: 0.68rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.05em;
+    }
+    .ticket-sub {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      font-family: 'Tiro Tamil', serif;
+      margin-top: 2px;
+    }
+
+    /* ===== SKELETON LOADER ===== */
+    @keyframes shimmerLoad { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+    .ticket-skeleton {
+      height: 70px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--dark2) 25%, rgba(201,151,58,0.08) 50%, var(--dark2) 75%);
+      background-size: 400px 100%;
+      animation: shimmerLoad 1.4s ease infinite;
+      margin-bottom: 10px;
+    }
+
+    /* ===== RJ SLIDER ===== */
+    .rj-slider-wrap { position: relative; }
+    .rj-slider {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-bottom: 8px;
+      scroll-behavior: smooth;
+    }
+    .rj-slider::-webkit-scrollbar { display: none; }
+    .rj-slide {
+      flex: 0 0 calc(25% - 15px);
+      min-width: 220px;
+      scroll-snap-align: start;
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 22px;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .rj-slide:hover { border-color: var(--gold-dim); transform: translateY(-4px); }
+    .rj-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cinzel', serif; font-weight: 700;
+      color: var(--black); font-size: 1rem;
+      margin: 0 auto 14px;
+    }
+    .rj-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.78rem; color: var(--text); margin-bottom: 5px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .rj-show { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.08em; font-family: 'Tiro Tamil', serif; margin-bottom: 10px; }
+    .rj-bio { font-size: 0.76rem; color: var(--text-dim); line-height: 1.6; font-family: 'Tiro Tamil', serif; }
+    .rj-dots { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+    .rj-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--border); border: 1px solid var(--gold-dim);
+      cursor: pointer; transition: all 0.3s;
+    }
+    .rj-dot.active { background: var(--gold); border-color: var(--gold); width: 22px; border-radius: 4px; }
+
+    /* ===== SCHEDULE SECTION ===== */
+    #schedule { background: var(--dark); }
+    .schedule-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .schedule-info p {
+      font-size: 0.92rem;
+      line-height: 1.9;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+      font-family: 'Tiro Tamil', serif;
+    }
+    .schedule-tip {
+      background: rgba(201,151,58,0.08);
+      border-left: 3px solid var(--gold);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    .schedule-image-wrap {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+    .schedule-placeholder {
+      background: var(--dark2);
+      aspect-ratio: 3/4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 40px;
+      text-align: center;
+    }
+    .schedule-placeholder .icon { font-size: 3rem; opacity: 0.4; }
+    .schedule-placeholder p {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      font-family: 'Tiro Tamil', serif;
+    }
+
+    /* ===== SHOWS SECTION ===== */
+    #shows { background: var(--black); }
+    .shows-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .show-card {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .show-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(201,151,58,0.08);
+      border-color: var(--gold-dim);
+    }
+    .show-card-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .show-card-img-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #1a1a1a, #222);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .show-card-body { padding: 18px 20px 20px; }
+    .show-card-time {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .show-card-title {
+      font-family: 'Tiro Tamil', serif;
+      font-size: 1.05rem;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .show-card-desc {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: var(--text-dim);
+      font-family: 'Tiro Tamil', serif;
+    }
+    .show-card-rj {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: var(--gold-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .show-card-rj::before { content: '🎙️'; font-size: 0.8rem; }
+
+    /* ===== YOUTUBE SECTION ===== */
+    #youtube { background: var(--dark); }
+    .youtube-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .youtube-wrap iframe {
+      display: block;
+      width: 100%;
+      height: 500px;
+    }
+
+    /* ===== ABOUT SECTION ===== */
+    #about { background: var(--black); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .about-logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .about-logo-wrap img {
+      width: 200px;
+      mix-blend-mode: lighten;
+      filter: drop-shadow(0 0 30px rgba(201,151,58,0.3));
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+    }
+    .stat-card {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+    .about-text p {
+      font-family: 'Tiro Tamil', serif;
+      font-size: 0.95rem;
+      line-height: 2;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .about-text p:first-child {
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    /* ===== SOCIAL SECTION ===== */
+    #social {
+      background: var(--dark);
+      text-align: center;
+      padding: 60px 5%;
+    }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: 40px;
+      border: 1px solid var(--border);
+      background: var(--dark2);
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .social-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .social-btn .icon { font-size: 1.1rem; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 30px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-left img {
+      height: 36px;
+      mix-blend-mode: lighten;
+    }
+    .footer-copy {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+    .footer-copy a {
+      color: var(--gold-dim);
+      transition: color 0.3s;
+    }
+    .footer-copy a:hover { color: var(--gold); }
+    .footer-right {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+    .footer-right a {
+      color: var(--gold-dim);
+      transition: color 0.3s;
+    }
+    .footer-right a:hover { color: var(--gold); }
+
+    /* ===== MOBILE RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .nav-logo-text { display: flex; }
+      .hero-cols { grid-template-columns: 1fr; gap: 28px; }
+      .hero-cols > div:first-child { order: 2; }
+      .hero-cols > div:last-child  { order: 1; }
+      .schedule-wrapper { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-logo-wrap img { width: 150px; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px; left: 0; right: 0;
+        background: rgba(8,8,8,0.98);
+        flex-direction: column;
+        padding: 20px 5%;
+        gap: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .youtube-wrap iframe { height: 250px; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LIVE NOW BAR -->
+  <div class="live-bar">
+    <div class="live-bar-left">
+      <div class="live-pill"><span class="live-dot"></span> LIVE</div>
+      <div class="live-bar-tagline">
+        aSAL FM · <span>இணையத்தில் ஈடு இணையில்லா இசைப் பெருவெளி</span>
+      </div>
+    </div>
+    <div class="live-bar-right">Feel The Music · Feel The Love</div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="nav-logo">
+      <img src="assets/logo.png" alt="aSAL FM Logo" />
+      <div class="nav-logo-text">
+        <span class="name">aSAL FM</span>
+      </div>
+    </div>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+
+      <li><a href="#shows">Shows & RJs</a></li>
+      <li><a href="#youtube">YouTube</a></li>
+      <li><a href="#about">About</a></li>
+
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- HERO / HOME -->
+  <section id="home">
+
+    <!-- Background legend photos - crossfading -->
+    <div class="bg-slide" style="background-image: url('assets/legend1.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('assets/legend2.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('assets/legend3.jpg');"></div>
+    <div class="hero-overlay"></div>
+
+    <!-- All hero content sits above the background -->
+    <div class="hero-content">
+
+      <!-- Centered header -->
+      <div class="hero-header">
+        <h1><span class="gold">அசல்</span> இசை</h1>
+        <div class="subtitle">Feel The Music, Feel The Love</div>
+      </div>
+
+      <!-- Two columns: Schedule | Player -->
+      <div class="hero-cols">
+
+        <!-- LEFT: Schedule tickets (Google Sheets powered) -->
+        <div style="animation: fadeInUp 0.8s ease 0.1s both;">
+          <div class="ticket-day-header">
+            <span style="display:inline-block; width:22px; height:1px; background:var(--gold);"></span>
+            <span id="scheduleHeading">Loading Schedule...</span>
+          </div>
+          <div class="tickets-list" id="ticketsList">
+            <!-- Skeleton loader -->
+            <div class="ticket-skeleton"></div>
+            <div class="ticket-skeleton"></div>
+            <div class="ticket-skeleton"></div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Live player -->
+        <div style="animation: fadeInUp 0.8s ease 0.25s both;">
+          <div style="font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; display:flex; align-items:center; gap:10px;">
+            <span style="display:inline-block; width:22px; height:1px; background:var(--gold);"></span>
+            Live Stream · நேரடி ஒலிபரப்பு
+          </div>
+          <div class="player-card" style="background:rgba(26,26,26,0.88); backdrop-filter:blur(8px);">
+            <iframe src="https://zeno.fm/player/asalfm" width="100%" height="220" frameborder="0" scrolling="no" allow="autoplay"></iframe>
+          </div>
+
+        </div>
+
+      </div>
+    </div><!-- end hero-content -->
+  </section>
+
+  <!-- SHOWS -->
+  <section id="shows">
+    <div class="container">
+    <div class="section-label" >Our Programmes — நிகழ்ச்சிகள்</div>
+    <h2 class="section-title" >
+      நிகழ்ச்சிகள்
+      <span class="en">Our Shows</span>
+    </h2>
+    <div class="section-divider" ></div>
+    <p style="font-family:'Tiro Tamil', serif; font-size:0.95rem; line-height:1.9; color:var(--text-dim); max-width:700px; margin: 0 auto 40px; text-align:center;">
+      வெறும் இசை மட்டுமல்லாமல் அதை சார்ந்த செய்திகளையும் கருத்துக்களையும் தாங்கி வரும் பத்துக்கும் மேற்பட்ட RJக்களின் படுவித்தியாசமான நிகழ்ச்சிகள். Tune in to your favourite show every week — all times shown in UK &amp; IST.
+    </p>
+    <div class="shows-grid" style="justify-content:center;">
+
+      <!-- 3 FEATURED SHOWS -->
+      <div class="show-card">
+        <div class="show-card-img-placeholder">🌙</div>
+        <div class="show-card-body">
+          <div class="show-card-title">இரவுப்பாடகன்</div>
+          <div class="show-card-desc">இரவின் மடியில் அமர்ந்து துயில் கொள்ளும் முன் கேட்க வேண்டிய பாடல்களை நமக்கு நிறைவாக அள்ளித்தரும் நிகழ்ச்சி. The night singer serenades you to sleep with timeless Tamil melodies.</div>
+          <div class="show-card-rj">RJ Krishnasamy Nagajothi</div>
+        </div>
+      </div>
+
+      <div class="show-card">
+        <div class="show-card-img-placeholder">📚</div>
+        <div class="show-card-body">
+          <div class="show-card-title">சீவக சிகாமணி</div>
+          <div class="show-card-desc">From rock to devotion — every genre explored with passion. வாரம் தோறும் திரைப்பட கலைஞர்களின் திரை இசை அலசல்கள் மற்றும் அனுபவங்கள் பகிரும் நிகழ்ச்சி.</div>
+          <div class="show-card-rj">RJ Sigamani</div>
+        </div>
+      </div>
+
+      <div class="show-card">
+        <div class="show-card-img-placeholder">🎵</div>
+        <div class="show-card-body">
+          <div class="show-card-title">சுகராகமே</div>
+          <div class="show-card-desc">A raga-based musical journey through the soul of Tamil classical and film music. இசையின் இனிமையை ராகங்களின் வழியே உணர வைக்கும் நிகழ்ச்சி.</div>
+          <div class="show-card-rj">RJ Namagiri Ganesh</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RJ ROSTER -->
+    <div style="margin-top:70px;">
+      <div class="section-label" >Our Team — எங்கள் குழு</div>
+      <h2 class="section-title" >
+        எங்கள் RJகள்
+        <span class="en">Meet the RJs</span>
+      </h2>
+      <div class="section-divider" ></div>
+      <p style="font-family:'Tiro Tamil', serif; font-size:0.92rem; line-height:1.9; color:var(--text-dim); max-width:600px; margin: 0 auto 40px; text-align:center;">
+        உலகின் பல மூலைகளிலிருந்து தன்னார்வமாக பணியாற்றும் எங்கள் அற்புதமான RJ குழு — all volunteering their time and talent purely for the love of Tamil music. 🎙️
+      </p>
+
+      <div class="rj-slider-wrap">
+        <div class="rj-slider" id="rjSlider">
+          <div class="rj-slide"><div class="rj-avatar">NG</div><div class="rj-name">RJ Namagiri Ganesh</div><div class="rj-show">சுகராகமே</div><div class="rj-bio">Raga-based show anchor from Trichy, bringing classical ragas alive through Tamil film music.</div></div>
+          <div class="rj-slide"><div class="rj-avatar">S</div><div class="rj-name">RJ Sigamani</div><div class="rj-show">சீவக சிகாமணி</div><div class="rj-bio">From Sivakasi, explores all genres from rock to devotion — no musical boundary is too wide!</div></div>
+          <div class="rj-slide"><div class="rj-avatar">M</div><div class="rj-name">RJ Maheswari</div><div class="rj-show">aSAL FM</div><div class="rj-bio">From science to politics — RJ Maheswari from Chennai brings intellect and music together beautifully.</div></div>
+          <div class="rj-slide"><div class="rj-avatar" style="font-size:0.7rem;">A&amp;J</div><div class="rj-name">RJ Aishwarya &amp; Jayadharini</div><div class="rj-show">கொஞ்சம் பேசு கொஞ்சம் பாட்டு</div><div class="rj-bio">A lively duo from Chennai — a little conversation, a lot of great music!</div></div>
+          <div class="rj-slide"><div class="rj-avatar">JM</div><div class="rj-name">RJ Jayshree Muthukumar</div><div class="rj-show">aSAL FM</div><div class="rj-bio">From Mumbai, celebrating Tamil classics and exploring the rich genres of Tamil film music.</div></div>
+          <div class="rj-slide"><div class="rj-avatar">R</div><div class="rj-name">RJ Ramamani</div><div class="rj-show">aSAL FM</div><div class="rj-bio">From Chennai, short stories, varieties and surprises — keeps listeners hooked every week!</div></div>
+          <div class="rj-slide"><div class="rj-avatar">SJ</div><div class="rj-name">RJ Sujatha</div><div class="rj-show">aSAL FM</div><div class="rj-bio">From Salem, exploring different genres with passion and bringing fresh flavours to Tamil music lovers.</div></div>
+          <div class="rj-slide"><div class="rj-avatar">SS</div><div class="rj-name">RJ Shyamala Sethuraman</div><div class="rj-show">aSAL FM</div><div class="rj-bio">From Chennai, soulful devotional music including the timeless திருக்கோளூர் பெண்பிள்ளை.</div></div>
+        </div>
+        <div class="rj-dots" id="rjDots"></div>
+      </div>
+    </div>
+    </div><!-- end container -->
+  </section>
+
+  <!-- YOUTUBE -->
+  <section id="youtube">
+    <div class="container">
+    <div class="section-label">Watch — பாடி வா தென்றலே</div>
+    <h2 class="section-title">
+      YouTube
+      <span class="en">Our YouTube Channel</span>
+    </h2>
+    <div class="section-divider"></div>
+    <div class="youtube-wrap">
+      <iframe
+        width="100%"
+        height="500"
+        src="https://www.youtube.com/embed/videoseries?list=PLQLuSN6vGEyBcfqFgRYMbBvHTBssRFCHp"
+        title="aSAL FM YouTube Playlist"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+      <a href="https://www.youtube.com/channel/UCGG79vUvZas3G7iwgvk7Fmw" target="_blank" style="display:inline-flex; align-items:center; gap:8px; padding:12px 28px; border:1px solid var(--border); border-radius:30px; color:var(--text-dim); font-size:0.85rem; font-weight:600; transition:all 0.3s;" onmouseover="this.style.borderColor='#c9973a';this.style.color='#c9973a';" onmouseout="this.style.borderColor='rgba(201,151,58,0.25)';this.style.color='var(--text-dim)';">
+        ▶ Visit our YouTube Channel — @asalfm
+      </a>
+    </div>
+    </div><!-- end container -->
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">    <div class="section-label">About — எங்களை பற்றி</div>
+    <h2 class="section-title">
+      அசல் FM பற்றி
+      <span class="en">About aSAL FM</span>
+    </h2>
+    <div class="section-divider"></div>
+    <div class="about-grid">
+      <div class="about-logo-wrap">
+        <img src="assets/logo.png" alt="aSAL FM" />
+        <div class="about-stats">
+          <div class="stat-card">
+            <span class="stat-num">10+</span>
+            <span class="stat-label">RJs</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">🌍</span>
+            <span class="stat-label">Worldwide</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">7</span>
+            <span class="stat-label">Days / Week</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">2020</span>
+            <span class="stat-label">Est.</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-text">
+        <p>
+          ஆயிரம் இணையதள வானொலிகளிக்கிடையே நல்லதொரு வீணையாய், தமிழ் இசையை, திரை இசைப்பாடல்களை இரைச்சல்கள் எதுவும் இன்றி, துல்லியமாக, நேர்த்தியாக அசல் FM வழங்கிக் கொண்டிருக்கிறது.
+        </p>
+        <p>
+          வெறும் இசை மட்டுமல்லாமல் அதை சார்ந்த செய்திகளையும், கருத்துக்களையும் தாங்கி வரும், பத்துக்கும் மேற்பட்ட RJக்களின் படுவித்தியாசமான நிகழ்ச்சிகள்.
+        </p>
+        <p>
+          Among thousands of internet radio stations, aSAL FM stands apart — delivering Tamil film music with clarity, warmth and authenticity. For like-minded music rasikas across the world 🌍
+        </p>
+      </div>
+    </div>
+    </div><!-- end container -->
+  </section>
+
+  <!-- DISCLAIMER + FOOTER -->
+  <div style="background:var(--black); border-top:1px solid rgba(201,151,58,0.1); padding:28px 5%;">
+    <div style="max-width:900px; margin:0 auto;">
+
+      <!-- Disclaimer -->
+      <div style="display:flex; gap:14px; align-items:flex-start; margin-bottom:28px;">
+        <div style="font-size:1rem; opacity:0.4; flex-shrink:0; margin-top:2px;">⚖️</div>
+        <p style="font-size:0.75rem; line-height:1.8; color:var(--text-dim);">
+          <strong style="color:var(--text);">aSAL FM is a voluntary, non-commercial community internet radio station.</strong>
+          All music belongs to their respective artists, composers, lyricists and music labels. We do not own any content broadcast and do not generate any monetary benefit. Contact:
+          <a href="/cdn-cgi/l/email-protection#7415071f150715181219341319151d185a171b19" style="color:var(--gold-dim); transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)'"><span class="__cf_email__" data-cfemail="6f0e1c040e1c0e0309022f08020e0603410c0002">[email&#160;protected]</span></a>
+        </p>
+      </div>
+
+      <!-- Footer row -->
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.05);">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <img src="assets/logo.png" alt="aSAL FM" style="height:36px; mix-blend-mode:lighten; opacity:0.85;" />
+          <span style="font-size:0.75rem; color:var(--text-dim);">© 2026 aSAL FM · For like-minded music rasikas across the world 🌍 · Powered by <a href="https://www.ishineuk.com" target="_blank" style="color:var(--gold-dim); transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)'">iShineUK</a></span>
+        </div>
+
+        <!-- Social icons -->
+        <div style="display:flex; align-items:center; gap:14px;">
+          <!-- Twitter/X -->
+          <a href="https://twitter.com/asal_fm" target="_blank" title="@asal_fm"
+             style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:0.85rem; font-weight:700; transition:all 0.3s;"
+             onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+             onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">𝕏</a>
+          <!-- Facebook -->
+          <a href="https://www.facebook.com/aSAL-FM-102463531687157" target="_blank" title="aSAL FM on Facebook"
+             style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:1rem; font-weight:700; transition:all 0.3s;"
+             onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+             onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">f</a>
+          <!-- YouTube -->
+          <a href="https://www.youtube.com/channel/UCGG79vUvZas3G7iwgvk7Fmw" target="_blank" title="aSAL FM YouTube"
+             style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:0.75rem; transition:all 0.3s;"
+             onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+             onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">▶</a>
+          <!-- Email -->
+          <a href="/cdn-cgi/l/email-protection#b4d5c7dfd5c7d5d8d2d9f4d3d9d5ddd89ad7dbd9" title="Email aSAL FM" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:0.85rem; transition:all 0.3s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">✉</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // ═══════════════════════════════════════════════════
+    // aSAL FM SCHEDULE
+    // 👉 Edit the shows array below to update the schedule!
+    // ═══════════════════════════════════════════════════
+    const scheduleData = [
+      { day:"Sunday", ukTime:"11:30 am", istTime:"5:00 pm",  rj:"RJ நாமகிரி கணேஷ்",                    show:"சுக ராகமே!",                    subtitle:"பாடும் இளையநிலா ஸ்ரீராம்" },
+      { day:"Sunday", ukTime:"12:30 pm", istTime:"6:00 pm",  rj:"RJ ரமாமணி",                            show:"குழந்தைகள்",                     subtitle:"அசோகமித்திரன் சிறுகதை" },
+      { day:"Sunday", ukTime:"1:00 pm",  istTime:"6:30 pm",  rj:"RJ ஜெயதாரணி & RJ மித்ரா சுதீன்",     show:"மகளிர் மட்டும்",                 subtitle:"" },
+      { day:"Sunday", ukTime:"2:00 pm",  istTime:"7:30 pm",  rj:"RJ மஹேஸ்வரி",                          show:"பொதுவுடமை",                      subtitle:"வகுப்பு" },
+      { day:"Sunday", ukTime:"3:00 pm",  istTime:"8:30 pm",  rj:"RJ ஜெயஸ்ரீ முத்துக்குமார்",            show:"நினைவில் நிற்கும் நிஜங்கள்",    subtitle:"" },
+      { day:"Sunday", ukTime:"4:00 pm",  istTime:"9:30 pm",  rj:"RJ கிருஷ்ணசாமி நாகஜோதி",              show:"இரவு பாடகன்",                    subtitle:"" }
+    ];
+
+    function renderSchedule() {
+      const list = document.getElementById('ticketsList');
+      const heading = document.getElementById('scheduleHeading');
+      const days = [...new Set(scheduleData.map(s => s.day))];
+      heading.textContent = "This Week · " + days.join(' · ') + " · அட்டவணை";
+      list.innerHTML = days.map(day => `
+        ${days.length > 1 ? `<div style="font-size:0.68rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin:12px 0 6px;font-family:'Cinzel',serif;">${day}</div>` : ''}
+        ${scheduleData.filter(s => s.day === day).map(s => `
+          <div class="ticket">
+            <div class="ticket-stub"><span class="stub-text">நேயர்</span></div>
+            <div class="ticket-body">
+              <div class="ticket-time-col">
+                <div class="ticket-uk-time">${s.ukTime}</div>
+                <div class="ticket-ist-time">🇮🇳 ${s.istTime}</div>
+              </div>
+              <div class="ticket-divider-v"></div>
+              <div class="ticket-info">
+                <div class="ticket-rj">🎙 ${s.rj}</div>
+                <div class="ticket-show">${s.show}</div>
+                ${s.subtitle ? `<div class="ticket-sub">${s.subtitle}</div>` : ''}
+              </div>
+            </div>
+          </div>`).join('')}`).join('');
+    }
+    renderSchedule();
+
+    // RJ Slider dots
+    const slider = document.getElementById('rjSlider');
+    const dotsContainer = document.getElementById('rjDots');
+    const slides = slider ? slider.querySelectorAll('.rj-slide') : [];
+    const visibleCount = () => window.innerWidth < 640 ? 1 : window.innerWidth < 900 ? 2 : window.innerWidth < 1200 ? 3 : 4;
+
+    function buildDots() {
+      if (!dotsContainer || slides.length === 0) return;
+      dotsContainer.innerHTML = '';
+      const pages = Math.ceil(slides.length / visibleCount());
+      for (let i = 0; i < pages; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'rj-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => {
+          const slideWidth = slides[0].offsetWidth + 20;
+          slider.scrollTo({ left: i * visibleCount() * slideWidth, behavior: 'smooth' });
+        });
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function updateDots() {
+      if (!dotsContainer || slides.length === 0) return;
+      const dots = dotsContainer.querySelectorAll('.rj-dot');
+      const slideWidth = slides[0].offsetWidth + 20;
+      const active = Math.round(slider.scrollLeft / (visibleCount() * slideWidth));
+      dots.forEach((d, i) => d.classList.toggle('active', i === active));
+    }
+
+    if (slider) {
+      buildDots();
+      slider.addEventListener('scroll', updateDots);
+      window.addEventListener('resize', () => { buildDots(); updateDots(); });
+    }
+  </script>
+
+</body>
+</html>
