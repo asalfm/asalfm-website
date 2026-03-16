@@ -1258,6 +1258,15 @@
     }
     loadSchedule();
 
+    // Build email links to prevent spam bots and Cloudflare interference
+    (function() {
+      const u = 'askasalfm', d = 'gmail.com', e = u + '@' + d;
+      const l1 = document.getElementById('emailLink1');
+      const l2 = document.getElementById('emailLink2');
+      if (l1) { l1.href = 'mailto:' + e; l1.textContent = e; }
+      if (l2) { l2.href = 'mailto:' + e; }
+    })();
+
     // RJ Slider dots
     const slider = document.getElementById('rjSlider');
     const dotsContainer = document.getElementById('rjDots');
