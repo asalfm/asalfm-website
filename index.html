@@ -1183,7 +1183,7 @@
     </div>
   </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     // ═══════════════════════════════════════════════════
     // aSAL FM SCHEDULE — reads from assets/schedule.csv
     // 👉 To update: edit schedule.csv and upload to GitHub
@@ -1245,8 +1245,15 @@
         if (shows.length === 0) throw new Error('Empty');
         renderTickets(shows);
       } catch(err) {
-        heading.textContent = "This Week's Schedule · அட்டவணை";
-        list.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-dim);font-size:0.8rem;font-family:'Tiro Tamil',serif;border:1px dashed var(--border);border-radius:10px;">📅 Schedule coming soon!</div>`;
+        // Fallback to hardcoded schedule if CSV fails
+        renderTickets([
+          { day:"Sunday", ukTime:"11:30 am", istTime:"5:00 pm",  rj:"RJ நாமகிரி கணேஷ்",               show:"சுக ராகமே!",                 subtitle:"பாடும் இளையநிலா ஸ்ரீராம்" },
+          { day:"Sunday", ukTime:"12:30 pm", istTime:"6:00 pm",  rj:"RJ ரமாமணி",                        show:"குழந்தைகள்",                  subtitle:"அசோகமித்திரன் சிறுகதை" },
+          { day:"Sunday", ukTime:"1:00 pm",  istTime:"6:30 pm",  rj:"RJ ஜெயதாரணி & RJ மித்ரா சுதீன்", show:"மகளிர் மட்டும்",              subtitle:"" },
+          { day:"Sunday", ukTime:"2:00 pm",  istTime:"7:30 pm",  rj:"RJ மஹேஸ்வரி",                      show:"பொதுவுடமை",                   subtitle:"வகுப்பு" },
+          { day:"Sunday", ukTime:"3:00 pm",  istTime:"8:30 pm",  rj:"RJ ஜெயஸ்ரீ முத்துக்குமார்",        show:"நினைவில் நிற்கும் நிஜங்கள்", subtitle:"" },
+          { day:"Sunday", ukTime:"4:00 pm",  istTime:"9:30 pm",  rj:"RJ கிருஷ்ணசாமி நாகஜோதி",          show:"இரவு பாடகன்",                 subtitle:"" }
+        ]);
       }
     }
     loadSchedule();
@@ -1276,7 +1283,11 @@
       if (!dotsContainer || slides.length === 0) return;
       const dots = dotsContainer.querySelectorAll('.rj-dot');
       const slideWidth = slides[0].offsetWidth + 20;
-      const active = Math.round(slider.scrollLeft / (visibleCount() * slideWidth));    if (slider) {
+      const active = Math.round(slider.scrollLeft / (visibleCount() * slideWidth));
+      dots.forEach((d, i) => d.classList.toggle('active', i === active));
+    }
+
+    if (slider) {
       buildDots();
       slider.addEventListener('scroll', updateDots);
       window.addEventListener('resize', () => { buildDots(); updateDots(); });
