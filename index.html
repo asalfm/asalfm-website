@@ -1194,7 +1194,7 @@
       const list = document.getElementById('ticketsList');
       const heading = document.getElementById('scheduleHeading');
       const days = [...new Set(shows.map(s => s.day))];
-      heading.textContent = "This Week · " + days.join(' · ') + " · அட்டவணை";
+      heading.textContent = "This Week · " + days.join(' · ') + " · நிகழ்ச்சிகள்";
       list.innerHTML = days.map(day => `
         ${days.length > 1 ? `<div style="font-size:0.68rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin:12px 0 6px;font-family:'Cinzel',serif;">${day}</div>` : ''}
         ${shows.filter(s => s.day === day).map(s => `
