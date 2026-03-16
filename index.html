@@ -1176,7 +1176,9 @@
              onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
              onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">▶</a>
           <!-- Email -->
-          <a href="#" onclick="var e=\'askasalfm\'+\'@\'+\'gmail.com\';window.location=\'mailto:\'+e;return false;" title="Email aSAL FM" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:0.85rem; transition:all 0.3s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">✉</a>
+          <span id="mailBtn" title="Email aSAL FM" data-n="askasalfm" data-d="gmail.com" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:0.85rem; transition:all 0.3s; cursor:pointer;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'" onclick="var t=this;window.location='mail'+'to:'+t.dataset.n+'@'+t.dataset.d">✉</span>
+          <span style="font-size:0.75rem; color:var(--text-dim); margin-left:6px;" id="emailText"></span>
+          <script>document.getElementById('emailText').textContent='ask'+'asalfm'+'@'+'gmail'+'.com';</script>
         </div>
       </div>
 
