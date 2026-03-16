@@ -1147,7 +1147,7 @@
         <p style="font-size:0.75rem; line-height:1.8; color:var(--text-dim);">
           <strong style="color:var(--text);">aSAL FM is a voluntary, non-commercial community internet radio station.</strong>
           All music belongs to their respective artists, composers, lyricists and music labels. We do not own any content broadcast and do not generate any monetary benefit. Contact:
-          <a href="/cdn-cgi/l/email-protection#0f6e7c646e7c6e6369624f68626e6663216c6062" style="color:var(--gold-dim); transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)'"><span class="__cf_email__" data-cfemail="c0a1b3aba1b3a1aca6ad80a7ada1a9aceea3afad">[email&#160;protected]</span></a>
+          
         </p>
       </div>
 
@@ -1176,7 +1176,7 @@
              onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
              onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">▶</a>
           <!-- Email -->
-          <a href="/cdn-cgi/l/email-protection#b5d4c6ded4c6d4d9d3d8f5d2d8d4dcd99bd6dad8" title="Email aSAL FM" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:0.85rem; transition:all 0.3s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">✉</a>
+          <a href="#" onclick="var e=\'askasalfm\'+\'@\'+\'gmail.com\';window.location=\'mailto:\'+e;return false;" title="Email aSAL FM" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:0.85rem; transition:all 0.3s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">✉</a>
         </div>
       </div>
 
@@ -1258,14 +1258,6 @@
     }
     loadSchedule();
 
-    // Build email links to prevent spam bots and Cloudflare interference
-    (function() {
-      const u = 'askasalfm', d = 'gmail.com', e = u + '@' + d;
-      const l1 = document.getElementById('emailLink1');
-      const l2 = document.getElementById('emailLink2');
-      if (l1) { l1.href = 'mailto:' + e; l1.textContent = e; }
-      if (l2) { l2.href = 'mailto:' + e; }
-    })();
 
     // RJ Slider dots
     const slider = document.getElementById('rjSlider');
