@@ -147,6 +147,9 @@
       white-space: nowrap;
     }
 
+    /* Hide mobile live pill on desktop */
+    .mobile-live-pill { display: none; }
+
     /* ===== NAVBAR ===== */
     nav {
       position: sticky;
@@ -847,6 +850,25 @@
     /* ===== MOBILE RESPONSIVE ===== */
     @media (max-width: 768px) {
       .nav-logo-text { display: flex; }
+      /* Hide live bar on mobile */
+      .live-bar { display: none; }
+      /* Navbar sticks to top on mobile (no live bar offset) */
+      nav { top: 0; position: sticky; }
+      /* Show LIVE pill in navbar on mobile only */
+      .mobile-live-pill {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: #ff4444;
+        background: rgba(255,68,68,0.1);
+        border: 1px solid rgba(255,68,68,0.3);
+        padding: 3px 8px;
+        border-radius: 20px;
+        margin-left: 8px;
+      }
       .hero-cols { grid-template-columns: 1fr; gap: 28px; }
       .hero-cols > div:first-child { order: 2; }
       .hero-cols > div:last-child  { order: 1; }
@@ -890,6 +912,7 @@
       <div class="nav-logo-text">
         <span class="name">aSAL FM</span>
       </div>
+      <div class="mobile-live-pill"><span class="live-dot"></span> LIVE</div>
     </div>
     </div>
     <ul class="nav-links" id="navLinks">
@@ -1124,7 +1147,7 @@
         <p style="font-size:0.75rem; line-height:1.8; color:var(--text-dim);">
           <strong style="color:var(--text);">aSAL FM is a voluntary, non-commercial community internet radio station.</strong>
           All music belongs to their respective artists, composers, lyricists and music labels. We do not own any content broadcast and do not generate any monetary benefit. Contact:
-          <a href="mailto:askasalfm@gmail.com" style="color:var(--gold-dim); transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)'">askasalfm@gmail.com</a>
+          <a href="/cdn-cgi/l/email-protection#0f6e7c646e7c6e6369624f68626e6663216c6062" style="color:var(--gold-dim); transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)'"><span class="__cf_email__" data-cfemail="c0a1b3aba1b3a1aca6ad80a7ada1a9aceea3afad">[email&#160;protected]</span></a>
         </p>
       </div>
 
@@ -1153,14 +1176,14 @@
              onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
              onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">▶</a>
           <!-- Email -->
-          <a href="mailto:askasalfm@gmail.com" title="Email aSAL FM" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:0.85rem; transition:all 0.3s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">✉</a>
+          <a href="/cdn-cgi/l/email-protection#b5d4c6ded4c6d4d9d3d8f5d2d8d4dcd99bd6dad8" title="Email aSAL FM" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:0.85rem; transition:all 0.3s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">✉</a>
         </div>
       </div>
 
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // ═══════════════════════════════════════════════════
     // aSAL FM SCHEDULE — reads from assets/schedule.csv
     // 👉 To update: edit schedule.csv and upload to GitHub
@@ -1253,11 +1276,7 @@
       if (!dotsContainer || slides.length === 0) return;
       const dots = dotsContainer.querySelectorAll('.rj-dot');
       const slideWidth = slides[0].offsetWidth + 20;
-      const active = Math.round(slider.scrollLeft / (visibleCount() * slideWidth));
-      dots.forEach((d, i) => d.classList.toggle('active', i === active));
-    }
-
-    if (slider) {
+      const active = Math.round(slider.scrollLeft / (visibleCount() * slideWidth));    if (slider) {
       buildDots();
       slider.addEventListener('scroll', updateDots);
       window.addEventListener('resize', () => { buildDots(); updateDots(); });
