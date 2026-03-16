@@ -1032,7 +1032,7 @@
   <!-- YOUTUBE -->
   <section id="youtube">
     <div class="container">
-    <div class="section-label">Watch — ராஜராகங்கள் - தினம் தினம் ஒரு ராகம்</div>
+    <div class="section-label">Watch — பாடி வா தென்றலே</div>
     <h2 class="section-title">
       YouTube
       <span class="en">Our YouTube Channel</span>
@@ -1151,26 +1151,17 @@
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // ═══════════════════════════════════════════════════
-    // aSAL FM SCHEDULE
-    // 👉 Edit the shows array below to update the schedule!
+    // aSAL FM SCHEDULE — reads from assets/schedule.csv
+    // 👉 To update: edit schedule.csv and upload to GitHub
     // ═══════════════════════════════════════════════════
-    const scheduleData = [
-      { day:"Sunday", ukTime:"11:30 am", istTime:"5:00 pm",  rj:"RJ நாமகிரி கணேஷ்",                    show:"சுக ராகமே!",                    subtitle:"பாடும் இளையநிலா ஸ்ரீராம்" },
-      { day:"Sunday", ukTime:"12:30 pm", istTime:"6:00 pm",  rj:"RJ ரமாமணி",                            show:"குழந்தைகள்",                     subtitle:"அசோகமித்திரன் சிறுகதை" },
-      { day:"Sunday", ukTime:"1:00 pm",  istTime:"6:30 pm",  rj:"RJ ஜெயதாரணி & RJ மித்ரா சுதீன்",     show:"மகளிர் மட்டும்",                 subtitle:"" },
-      { day:"Sunday", ukTime:"2:00 pm",  istTime:"7:30 pm",  rj:"RJ மஹேஸ்வரி",                          show:"பொதுவுடமை",                      subtitle:"வகுப்பு" },
-      { day:"Sunday", ukTime:"3:00 pm",  istTime:"8:30 pm",  rj:"RJ ஜெயஸ்ரீ முத்துக்குமார்",            show:"நினைவில் நிற்கும் நிஜங்கள்",    subtitle:"" },
-      { day:"Sunday", ukTime:"4:00 pm",  istTime:"9:30 pm",  rj:"RJ கிருஷ்ணசாமி நாகஜோதி",              show:"இரவு பாடகன்",                    subtitle:"" }
-    ];
-
-    function renderSchedule() {
+    function renderTickets(shows) {
       const list = document.getElementById('ticketsList');
       const heading = document.getElementById('scheduleHeading');
-      const days = [...new Set(scheduleData.map(s => s.day))];
+      const days = [...new Set(shows.map(s => s.day))];
       heading.textContent = "This Week · " + days.join(' · ') + " · அட்டவணை";
       list.innerHTML = days.map(day => `
         ${days.length > 1 ? `<div style="font-size:0.68rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin:12px 0 6px;font-family:'Cinzel',serif;">${day}</div>` : ''}
-        ${scheduleData.filter(s => s.day === day).map(s => `
+        ${shows.filter(s => s.day === day).map(s => `
           <div class="ticket">
             <div class="ticket-stub"><span class="stub-text">நேயர்</span></div>
             <div class="ticket-body">
@@ -1187,7 +1178,44 @@
             </div>
           </div>`).join('')}`).join('');
     }
-    renderSchedule();
+
+    async function loadSchedule() {
+      const list = document.getElementById('ticketsList');
+      const heading = document.getElementById('scheduleHeading');
+      try {
+        const res = await fetch('assets/schedule.csv');
+        if (!res.ok) throw new Error('CSV not found');
+        const text = await res.text();
+        const lines = text.trim().split('\n');
+        const headers = lines[0].split(',').map(h => h.trim());
+        const idx = k => headers.indexOf(k);
+        const shows = lines.slice(1).map(line => {
+          // Handle quoted fields with commas inside
+          const cols = [];
+          let cur = '', inQ = false;
+          for (let c of line) {
+            if (c === '"') inQ = !inQ;
+            else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+            else cur += c;
+          }
+          cols.push(cur.trim());
+          return {
+            day:      cols[idx('day')]      || '',
+            ukTime:   cols[idx('ukTime')]   || '',
+            istTime:  cols[idx('istTime')]  || '',
+            rj:       cols[idx('rj')]       || '',
+            show:     cols[idx('show')]     || '',
+            subtitle: cols[idx('subtitle')] || ''
+          };
+        }).filter(s => s.show && s.day);
+        if (shows.length === 0) throw new Error('Empty');
+        renderTickets(shows);
+      } catch(err) {
+        heading.textContent = "This Week's Schedule · அட்டவணை";
+        list.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-dim);font-size:0.8rem;font-family:'Tiro Tamil',serif;border:1px dashed var(--border);border-radius:10px;">📅 Schedule coming soon!</div>`;
+      }
+    }
+    loadSchedule();
 
     // RJ Slider dots
     const slider = document.getElementById('rjSlider');
