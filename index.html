@@ -487,19 +487,27 @@
       flex-shrink: 0;
       min-width: 68px;
     }
-    .ticket-uk-time {
+    .ticket-ist-label {
       font-family: 'Cinzel', serif;
-      font-size: 0.85rem;
+      font-size: 0.6rem;
       color: var(--gold);
-      font-weight: 600;
-      white-space: nowrap;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      margin-bottom: 1px;
     }
     .ticket-ist-time {
       font-family: 'Cinzel', serif;
-      font-size: 0.82rem;
-      color: var(--text);
-      font-weight: 600;
-      margin-top: 3px;
+      font-size: 0.88rem;
+      color: var(--gold);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .ticket-uk-time {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-weight: 500;
+      margin-top: 4px;
       white-space: nowrap;
     }
     .ticket-divider-v {
@@ -1237,8 +1245,9 @@
             <div class="ticket-stub"><span class="stub-text">நேயர்</span></div>
             <div class="ticket-body">
               <div class="ticket-time-col">
+                <div class="ticket-ist-label">INDIA</div>
+                <div class="ticket-ist-time">${s.istTime}</div>
                 <div class="ticket-uk-time">${s.ukTime}</div>
-                <div class="ticket-ist-time">India ${s.istTime}</div>
               </div>
               <div class="ticket-divider-v"></div>
               <div class="ticket-info">
